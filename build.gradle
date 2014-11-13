@@ -1,0 +1,64 @@
+apply plugin: 'groovy'
+apply plugin: 'war'
+apply plugin: 'com.bmuschko.tomcat'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.0'
+    }
+}
+
+version = 0.1
+sourceCompatibility = 1.7
+
+ext {
+    wicketVersion = '7.0.0-M4'
+    slf4jVersion = '1.7.7'
+    log4jVersion = '1.2.17'
+    groovyVersion = '2.3.6' // This must match the version shipped with Gradle
+    spockVersion = '0.7-groovy-2.0'
+    javaxServletVersion = '3.1.0'
+}
+
+sourceSets {
+    main {
+        groovy {
+            resources {
+                srcDir 'src/main/resources'
+                srcDir 'src/main/groovy'
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    providedCompile "javax.servlet:javax.servlet-api:$javaxServletVersion"
+
+    compile "org.codehaus.groovy:groovy-all:$groovyVersion"
+    compile "org.apache.wicket:wicket:$wicketVersion"
+    compile "org.apache.wicket:wicket-extensions:$wicketVersion"
+    compile "org.slf4j:slf4j-log4j12:$slf4jVersion"
+    compile "log4j:log4j:$log4jVersion"
+
+    testCompile "org.spockframework:spock-core:$spockVersion"
+
+    def tomcatVersion = '7.0.11'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
+    tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
+        exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2'
+}
