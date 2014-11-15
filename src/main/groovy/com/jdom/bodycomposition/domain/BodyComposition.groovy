@@ -3,7 +3,7 @@ package com.jdom.bodycomposition.domain
 /**
  * Created by djohnson on 11/14/14.
  */
-class BodyComposition {
+class BodyComposition implements Serializable {
 
     Date date
 

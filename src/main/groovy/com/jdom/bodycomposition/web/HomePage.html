@@ -1,10 +1,85 @@
-<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" >
-    <head>  
-        <title>Wicket Quickstart Archetype Homepage</title>
-    </head>
-    <body>
-        <strong>Wicket Quickstart Archetype Homepage</strong>
-        <br/><br/>
-        <span wicket:id="message">message will be here</span>
-    </body>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+    <title>Body Composition</title>
+    <wicket:link>
+        <link href="style.css" rel="stylesheet" type="text/css"/>
+    </wicket:link>
+</head>
+<body>
+<br/><br/>
+
+<div id="previousEntriesDiv">
+    <strong>Daily Entries</strong>
+    <table>
+        <tr wicket:id="entries">
+            <td wicket:id="date">11/08/2014</td>
+            <td wicket:id="weight">137.1</td>
+            <td wicket:id="bodyFat">13.5</td>
+            <td wicket:id="waterPercentage">62.3</td>
+        </tr>
+        <wicket:remove>
+            <tr>
+                <td>11/09/2014</td>
+                <td>136.5</td>
+                <td>13.7</td>
+                <td>61.7</td>
+            </tr>
+            <tr>
+                <td>11/10/2014</td>
+                <td>137.5</td>
+                <td>14.1</td>
+                <td>63.1</td>
+            </tr>
+            <tr>
+                <td>11/11/2014</td>
+                <td>137.5</td>
+                <td>14.1</td>
+                <td>63.1</td>
+            </tr>
+            <tr>
+                <td>11/12/2014</td>
+                <td>137.5</td>
+                <td>14.1</td>
+                <td>63.1</td>
+            </tr>
+            <tr>
+                <td>11/13/2014</td>
+                <td>137.5</td>
+                <td>14.1</td>
+                <td>63.1</td>
+            </tr>
+            <tr>
+                <td>11/14/2014</td>
+                <td>137.5</td>
+                <td>14.1</td>
+                <td>63.1</td>
+            </tr>
+        </wicket:remove>
+    </table>
+</div>
+
+<div id="newEntryDiv">
+    <strong>New Entry</strong><br/>
+
+    <form wicket:id="newEntryForm" id="newEntryForm">
+        <div>
+            <label for="date">Date</label>
+            <input wicket:id="date" name="date" type="text">
+        </div>
+        <div>
+            <label for="weight">Weight</label>
+            <input wicket:id="weight" name="weight"/><br/>
+        </div>
+        <div>
+            <label for="bodyFat">Body Fat</label>
+            <input wicket:id="bodyFat" name="bodyFat"/><br/>
+        </div>
+        <div>
+            <label for="waterPercentage">Water Percentage</label>
+            <input wicket:id="waterPercentage" name="waterPercentage"/><br/>
+        </div>
+        <input wicket:id="add" type="submit" value="Add"/>
+    </form>
+</div>
+</body>
 </html>
