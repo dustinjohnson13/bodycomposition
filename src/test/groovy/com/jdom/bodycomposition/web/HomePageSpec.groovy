@@ -1,10 +1,15 @@
 package com.jdom.bodycomposition.web
+
+import com.jdom.bodycomposition.service.BodyCompositionContext
+import com.jdom.bodycomposition.service.SpringProfiles
 import org.apache.wicket.util.tester.WicketTester
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
-@ContextConfiguration(locations = ["classpath:/applicationContext.xml"])
+@ActiveProfiles(SpringProfiles.TEST)
+@ContextConfiguration(classes = [BodyCompositionContext.class])
 class HomePageSpec extends Specification {
 
     @Autowired
