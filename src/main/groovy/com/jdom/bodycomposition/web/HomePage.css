@@ -1,17 +1,23 @@
-#previousEntriesDiv {
+#previousEntriesDiv, #newEntryDiv {
     float:left;
-    width:15%;
+    width:50%;
     overflow:hidden;
+    padding-bottom: 20px;
 }
-#newEntryDiv {
-    float:left;
-    width:85%;
+#similarDays, #metricsDiv {
+    float:right;
+    width:50%;
     overflow:hidden;
+    padding-bottom: 20px;
+}
+table th,td {
+    text-align: left;
+    padding-right: 10px;
 }
 form {
     display: table-cell;
     vertical-align: right;
-    height: 50px;
+    height: 100px;
     border: 1px solid black;
 }
 form div {

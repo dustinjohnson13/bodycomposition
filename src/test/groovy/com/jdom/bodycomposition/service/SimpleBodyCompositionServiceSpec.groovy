@@ -1,6 +1,7 @@
 package com.jdom.bodycomposition.service
 
 import com.jdom.bodycomposition.domain.DailyEntry
+import com.jdom.bodycomposition.domain.TrendMetrics
 import com.jdom.util.TimeUtil
 import com.jdom.util.TimeUtilHelper
 import org.springframework.beans.factory.annotation.Autowired
@@ -93,5 +94,31 @@ class SimpleBodyCompositionServiceSpec extends Specification {
         persisted.weight == 139.7
         persisted.bodyFat == 13.7
         persisted.waterPercentage == 61.8
+    }
+
+    def 'should return newest entry'() {
+        when: 'the newest entry is requested'
+        def newest = service.getNewestEntry()
+        def expected = TimeUtil.dateFromDashString('2014-11-14')
+
+        then: 'the newest entry is returned'
+        assert newest.date == expected
+    }
+
+    def 'should return metrics for 7,14,30, and 60 days'() {
+
+        def expectedNumberOfDays = [
+              7, 14, 30, 60, 90
+        ]
+
+        when: 'trend metrics are requested'
+        List<TrendMetrics> metrics = service.getTrendMetricsToDisplay()
+
+        then: 'the correct number of metrics were returned'
+        metrics.size() == 5
+
+        def actual = metrics.collect{ it.periodInDays }
+        and: 'they had the correct periods'
+        actual == expectedNumberOfDays
     }
 }

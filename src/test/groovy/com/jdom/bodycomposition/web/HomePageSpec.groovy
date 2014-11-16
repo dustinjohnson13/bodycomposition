@@ -28,8 +28,5 @@ class HomePageSpec extends Specification {
 
         then: 'the home page was rendered'
         tester.assertRenderedPage(HomePage.class)
-
-        and: 'the welcome message is displayed'
-        tester.assertLabel("message", "If you see this message wicket is properly configured and running")
     }
 }

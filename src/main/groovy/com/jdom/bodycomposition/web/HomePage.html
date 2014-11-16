@@ -2,61 +2,13 @@
 <head>
     <title>Body Composition</title>
     <wicket:link>
-        <link href="style.css" rel="stylesheet" type="text/css"/>
+        <link href="HomePage.css" rel="stylesheet" type="text/css"/>
     </wicket:link>
 </head>
 <body>
 <br/><br/>
 
-<div wicket:id="previousEntriesDiv" id="previousEntriesDiv">
-    <strong>Daily Entries</strong>
-    <table>
-        <tr wicket:id="entries">
-            <td wicket:id="date">11/08/2014</td>
-            <td wicket:id="weight">137.1</td>
-            <td wicket:id="bodyFat">13.5</td>
-            <td wicket:id="waterPercentage">62.3</td>
-        </tr>
-        <wicket:remove>
-            <tr>
-                <td>11/09/2014</td>
-                <td>136.5</td>
-                <td>13.7</td>
-                <td>61.7</td>
-            </tr>
-            <tr>
-                <td>11/10/2014</td>
-                <td>137.5</td>
-                <td>14.1</td>
-                <td>63.1</td>
-            </tr>
-            <tr>
-                <td>11/11/2014</td>
-                <td>137.5</td>
-                <td>14.1</td>
-                <td>63.1</td>
-            </tr>
-            <tr>
-                <td>11/12/2014</td>
-                <td>137.5</td>
-                <td>14.1</td>
-                <td>63.1</td>
-            </tr>
-            <tr>
-                <td>11/13/2014</td>
-                <td>137.5</td>
-                <td>14.1</td>
-                <td>63.1</td>
-            </tr>
-            <tr>
-                <td>11/14/2014</td>
-                <td>137.5</td>
-                <td>14.1</td>
-                <td>63.1</td>
-            </tr>
-        </wicket:remove>
-    </table>
-</div>
+<div wicket:id="previousEntriesDiv" id="previousEntriesDiv"></div>
 
 <div id="newEntryDiv">
     <strong>New Entry</strong><br/>
@@ -78,8 +30,56 @@
             <label for="waterPercentage">Water Percentage</label>
             <input wicket:id="waterPercentage" name="waterPercentage"/><br/>
         </div>
-        <input wicket:id="add" type="submit" value="Add"/>
+        <input wicket:id="add" type="button" value="Add"/>
     </form>
 </div>
+
+<div wicket:id="similarDays" id="similarDays"></div>
+
+<div wicket:id="metricsDiv" id="metricsDiv">
+    <strong>Trend Metrics</strong>
+    <table>
+        <tr>
+            <th>Period</th>
+            <th>Weight</th>
+            <th>Body Fat</th>
+            <th>Water %</th>
+        </tr>
+        <tr wicket:id="metrics">
+            <td wicket:id="period">7 Day</td>
+            <td wicket:id="weightDifference">-1.5</td>
+            <td wicket:id="bodyFatDifference">-0.5</td>
+            <td wicket:id="waterPercentageDifference">+1.1</td>
+        </tr>
+        <wicket:remove>
+            <tr>
+                <td>14 Day</td>
+                <td>-2.7</td>
+                <td>-1.3</td>
+                <td>+0.5</td>
+            </tr>
+            <tr>
+                <td>30 Day</td>
+                <td>-3.3</td>
+                <td>-1.7</td>
+                <td>+0.3</td>
+            </tr>
+            <tr>
+                <td>60 Day</td>
+                <td>-4.3</td>
+                <td>-2.7</td>
+                <td>-0.2</td>
+            </tr>
+            <tr>
+                <td>90 Day</td>
+                <td>-3.3</td>
+                <td>-1.7</td>
+                <td>+1.2</td>
+            </tr>
+        </wicket:remove>
+    </table>
+</div>
+
+
 </body>
 </html>

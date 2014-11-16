@@ -1,6 +1,8 @@
 package com.jdom.bodycomposition.service
+
 import com.jdom.bodycomposition.domain.DailyEntry
 import com.jdom.bodycomposition.domain.DailyTrend
+import com.jdom.bodycomposition.domain.TrendMetrics
 import com.jdom.util.TimeUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -35,6 +37,13 @@ class SimpleBodyCompositionService implements BodyCompositionService {
     }
 
     @Override
+    DailyEntry getNewestEntry() {
+        def list = getWeeksWorthOfEntries();
+
+        return list.get(list.size() - 1);
+    }
+
+    @Override
     void saveEntry(DailyEntry entry) {
         Calendar cal = TimeUtil.newCalendar()
         cal.setTime(entry.getDate())
@@ -46,8 +55,11 @@ class SimpleBodyCompositionService implements BodyCompositionService {
 
         dailyEntryDao.save(entry)
 
+        DailyTrend previous = null
         List<DailyTrend> all = dailyTrendDao.findAll()
-        DailyTrend previous = all.get(all.size() - 1)
+        if (!all.isEmpty()) {
+            previous = all.get(all.size() - 1)
+        }
 
         DailyTrend trend = trendService.calculateDailyTrend(previous, entry)
         dailyTrendDao.save(trend)
@@ -61,5 +73,38 @@ class SimpleBodyCompositionService implements BodyCompositionService {
     @Override
     DailyTrend findTrendByDate(Date date) {
         return dailyTrendDao.findByDate(date)
+    }
+
+    @Override
+    List<TrendMetrics> getTrendMetricsToDisplay() {
+        List<TrendMetrics> results = []
+        DailyEntry newest = getNewestEntry();
+        DailyTrend newestTrend = dailyTrendDao.findByDate(newest.date)
+
+        Calendar cal = Calendar.getInstance()
+
+        for (i in [7, 14, 30, 60, 90]) {
+            cal.setTime(newestTrend.date)
+            cal.add(Calendar.DAY_OF_YEAR, -i)
+
+            Date date = cal.getTime()
+
+            DailyTrend trend = dailyTrendDao.findByDate(date)
+
+            results += trendService.calculateTrendMetrics(trend, newestTrend)
+        }
+
+        return results
+    }
+
+    @Override
+    List<DailyEntry> getSimilarDays() {
+        DailyEntry newest = getNewestEntry();
+        
+        def entries = dailyEntryDao.findByWaterPercentage(newest.waterPercentage)
+        if (entries.size() > 10) {
+            entries = entries.subList(entries.size() - 11, entries.size())
+        }
+        return entries
     }
 }

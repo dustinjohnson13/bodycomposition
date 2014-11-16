@@ -16,4 +16,6 @@ public interface BaseEntryDao<T extends BaseEntry> extends CrudRepository<T, Lon
    List<T> findByDateBetween(Date start, Date end);
 
    T findByDate(Date date);
+
+   List<T> findByWaterPercentage(double waterPercentage);
 }

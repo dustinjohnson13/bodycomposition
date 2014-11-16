@@ -39,4 +39,20 @@ class TimeUtil {
     static Date dateFromDashString(String string) {
         return new SimpleDateFormat('yyyy-MM-dd').parse(string)
     }
+
+    static Date zeroHoursAndBelow(Date date) {
+        Calendar cal = Calendar.getInstance()
+        cal.setTime(date)
+
+        return zeroHoursAndBelow(cal).getTime()
+    }
+
+    static Calendar zeroHoursAndBelow(Calendar cal) {
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+
+        return cal
+    }
 }
