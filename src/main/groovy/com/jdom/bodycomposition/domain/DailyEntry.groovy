@@ -1,9 +1,8 @@
 package com.jdom.bodycomposition.domain
-
 import groovy.transform.EqualsAndHashCode
-import groovy.transform.ToString
 
-import javax.persistence.*
+import javax.persistence.Entity
+import javax.persistence.Table
 
 /**
  * Created by djohnson on 11/14/14.
@@ -11,7 +10,6 @@ import javax.persistence.*
 @Entity
 @Table(name = 'daily_entry')
 @EqualsAndHashCode
-@ToString
 class DailyEntry extends BaseEntry {
 
 }

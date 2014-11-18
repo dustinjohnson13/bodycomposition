@@ -1,14 +1,16 @@
 package com.jdom.bodycomposition.service
-
 import com.jdom.bodycomposition.domain.DailyEntry
 import com.jdom.bodycomposition.domain.DailyTrend
 import com.jdom.bodycomposition.domain.TrendMetrics
 import com.jdom.util.TimeUtil
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 
 import javax.transaction.Transactional
-
 /**
  * Created by djohnson on 11/14/14.
  */
@@ -21,26 +23,19 @@ class SimpleBodyCompositionService implements BodyCompositionService {
     @Autowired TrendService trendService
 
     @Override
-    List<DailyEntry> getWeeksWorthOfEntries() {
+    List<DailyEntry> getLastSevenEntries() {
+        Pageable lastSeven = new PageRequest(0, 7, Sort.Direction.DESC, 'date')
+        Page page = dailyEntryDao.findAll(lastSeven)
 
-        Calendar cal = TimeUtil.newCalendar()
-        Date end = cal.getTime();
-
-        cal.add(Calendar.DAY_OF_YEAR, -6);
-        cal.set(Calendar.MILLISECOND, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        Date start = cal.getTime();
-
-        return dailyEntryDao.findByDateBetween(start, end)
+        return page.getContent().reverse()
     }
 
     @Override
     DailyEntry getNewestEntry() {
-        def list = getWeeksWorthOfEntries();
+        Pageable latest = new PageRequest(0, 1, Sort.Direction.DESC, 'date')
+        Page page = dailyEntryDao.findAll(latest)
 
-        return list.get(list.size() - 1);
+        return page.getContent()[0]
     }
 
     @Override
@@ -56,9 +51,9 @@ class SimpleBodyCompositionService implements BodyCompositionService {
         dailyEntryDao.save(entry)
 
         DailyTrend previous = null
-        List<DailyTrend> all = dailyTrendDao.findAll()
-        if (!all.isEmpty()) {
-            previous = all.get(all.size() - 1)
+        List<DailyTrend> content = dailyTrendDao.findAll(new PageRequest(0, 1, Sort.Direction.DESC, 'date')).getContent()
+        if (!content.isEmpty()) {
+            previous = content[0]
         }
 
         DailyTrend trend = trendService.calculateDailyTrend(previous, entry)
@@ -83,7 +78,7 @@ class SimpleBodyCompositionService implements BodyCompositionService {
 
         Calendar cal = Calendar.getInstance()
 
-        for (i in [7, 14, 30, 60, 90]) {
+        for (i in [7, 14, 30, 60, 90, 180, 365]) {
             cal.setTime(newestTrend.date)
             cal.add(Calendar.DAY_OF_YEAR, -i)
 
@@ -91,7 +86,9 @@ class SimpleBodyCompositionService implements BodyCompositionService {
 
             DailyTrend trend = dailyTrendDao.findByDate(date)
 
-            results += trendService.calculateTrendMetrics(trend, newestTrend)
+            if (trend != null) {
+                results += trendService.calculateTrendMetrics(trend, newestTrend)
+            }
         }
 
         return results
@@ -100,11 +97,10 @@ class SimpleBodyCompositionService implements BodyCompositionService {
     @Override
     List<DailyEntry> getSimilarDays() {
         DailyEntry newest = getNewestEntry();
-        
-        def entries = dailyEntryDao.findByWaterPercentage(newest.waterPercentage)
-        if (entries.size() > 10) {
-            entries = entries.subList(entries.size() - 11, entries.size())
-        }
-        return entries
+
+        Pageable recentEleven = new PageRequest(0, 11);
+
+        def entries = dailyEntryDao.findByWaterPercentageOrderByDateDesc(newest.waterPercentage, recentEleven)
+        return entries.findAll{ it.id != newest.id }.reverse()
     }
 }

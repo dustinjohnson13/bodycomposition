@@ -1,15 +1,13 @@
 package com.jdom.bodycomposition.domain
 
-import javax.persistence.Column
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.MappedSuperclass
+import groovy.transform.ToString
 
+import javax.persistence.*
 /**
  * Created by djohnson on 11/15/14.
  */
 @MappedSuperclass
+@ToString
 class BaseEntry implements Serializable {
 
     @Id

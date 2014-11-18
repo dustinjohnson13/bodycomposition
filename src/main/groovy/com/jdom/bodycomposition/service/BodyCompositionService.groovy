@@ -9,7 +9,7 @@ import com.jdom.bodycomposition.domain.TrendMetrics
  */
 interface BodyCompositionService {
 
-    List<DailyEntry> getWeeksWorthOfEntries()
+    List<DailyEntry> getLastSevenEntries()
 
     DailyEntry getNewestEntry()
 

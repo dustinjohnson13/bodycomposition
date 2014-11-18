@@ -40,9 +40,10 @@ class SimpleBodyCompositionServiceSpec extends Specification {
         TimeUtilHelper.resumeTime()
     }
 
-    def 'should return entries in specified range'() {
+    def 'should return last seven entries'() {
 
         def expectedDates = [
+              '11/08/2014',
               '11/09/2014',
               '11/10/2014',
               '11/11/2014',
@@ -52,10 +53,10 @@ class SimpleBodyCompositionServiceSpec extends Specification {
         ]
 
         when: 'entries for a week are retrieved'
-        def results = service.getWeeksWorthOfEntries()
+        def results = service.getLastSevenEntries()
 
         then: 'the correct number of results were returned'
-        results.size() == 6
+        results.size() == 7
 
         and: 'they have the correct dates'
         SimpleDateFormat format = new SimpleDateFormat('MM/dd/yyyy')
@@ -105,20 +106,42 @@ class SimpleBodyCompositionServiceSpec extends Specification {
         assert newest.date == expected
     }
 
-    def 'should return metrics for 7,14,30, and 60 days'() {
+    def 'should return metrics for 7,14,30,60,90,180,365 days'() {
 
         def expectedNumberOfDays = [
-              7, 14, 30, 60, 90
+              7, 14, 30, 60, 90, 180, 365
         ]
 
         when: 'trend metrics are requested'
         List<TrendMetrics> metrics = service.getTrendMetricsToDisplay()
 
         then: 'the correct number of metrics were returned'
-        metrics.size() == 5
+        metrics.size() == 7
 
         def actual = metrics.collect{ it.periodInDays }
         and: 'they had the correct periods'
         actual == expectedNumberOfDays
+    }
+
+    def 'should limit similar days to last 10'() {
+
+        given: 'the entry for today has a frequent water percentage'
+        DailyEntry entry = new DailyEntry(date: TimeUtil.newDate(), weight: 138, bodyFat: 13.5, waterPercentage: 63.9)
+        service.saveEntry(entry)
+
+        when: 'similar days are requested'
+        def similarDays = service.getSimilarDays()
+
+        then: 'all similar days have the same water percentage'
+        similarDays.each {
+            assert it.waterPercentage == entry.waterPercentage
+        }
+
+        and: 'the results are limited to 10 entries'
+        similarDays.size() == 10
+
+        and: 'they are the most recent days'
+        similarDays.get(0).date == TimeUtil.dateFromDashString('2014-01-03')
+        similarDays.get(9).date == TimeUtil.dateFromDashString('2014-07-29')
     }
 }

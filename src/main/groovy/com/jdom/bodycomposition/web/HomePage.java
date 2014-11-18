@@ -41,7 +41,7 @@ public class HomePage extends WebPage {
 
       IModel<List<? extends BaseEntry>> weeksWorthOfEntries =  new LoadableDetachableModel<List<? extends BaseEntry>>() {
          protected List<DailyEntry> load() {
-            return bodyCompositionService.getWeeksWorthOfEntries();
+            return bodyCompositionService.getLastSevenEntries();
          }
       };
 
