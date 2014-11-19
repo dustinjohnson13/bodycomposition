@@ -35,7 +35,8 @@ class SimpleTrendServiceSpec extends Specification {
 
         def start = new DailyTrend(date: TimeUtil.dateFromDashString('2014-11-02'), weight: 138.2, bodyFat: 13.3, waterPercentage: 62.2)
         def end = new DailyTrend(date: TimeUtil.dateFromDashString('2014-11-09'), weight: 139.3, bodyFat: 12.7, waterPercentage: 61.4)
-        def expectedMetrics = new TrendMetrics(start: TimeUtil.dateFromDashString('2014-11-02'), end: TimeUtil.dateFromDashString('2014-11-09'), weightDifference: 1.1, bodyFatDifference: -0.6, waterPercentageDifference: -0.8)
+        def expectedMetrics = new TrendMetrics(start: TimeUtil.dateFromDashString('2014-11-02'), end: TimeUtil.dateFromDashString('2014-11-09'),
+              weightDifference: 1.1, bodyFatDifference: -0.6, waterPercentageDifference: -0.8, normalizedBodyFatDifference: -1.4)
 
         when: 'the trend metrics are calculated'
         def actual = service.calculateTrendMetrics(start, end)

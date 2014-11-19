@@ -28,7 +28,8 @@ class SimpleTrendService implements TrendService {
     TrendMetrics calculateTrendMetrics(DailyTrend start, DailyTrend end) {
         TrendMetrics metrics = new TrendMetrics(start: start.date, end: end.date,
             weightDifference: roundToOneDecimal(end.weight - start.weight), bodyFatDifference: roundToOneDecimal(end.bodyFat - start.bodyFat),
-            waterPercentageDifference: roundToOneDecimal(end.waterPercentage - start.waterPercentage))
+            waterPercentageDifference: roundToOneDecimal(end.waterPercentage - start.waterPercentage),
+              normalizedBodyFatDifference: roundToOneDecimal(end.normalizedBodyFat - start.normalizedBodyFat))
 
         return metrics
     }

@@ -29,6 +29,7 @@ public class EntriesPanel extends Panel {
             item.add(new Label("weight", Double.toString(BaseEntry.getWeight())));
             item.add(new Label("bodyFat", Double.toString(BaseEntry.getBodyFat())));
             item.add(new Label("waterPercentage", Double.toString(BaseEntry.getWaterPercentage())));
+            item.add(new Label("normalizedBodyFat", Double.toString(BaseEntry.getNormalizedBodyFat())));
          }
       };
       add(entries);

@@ -14,6 +14,7 @@ class TrendMetrics implements Serializable {
     double weightDifference
     double bodyFatDifference
     double waterPercentageDifference
+    double normalizedBodyFatDifference
 
     int getPeriodInDays() {
         return (end.getTime() - start.getTime()) / TimeUtil.MILLIS_PER_DAY

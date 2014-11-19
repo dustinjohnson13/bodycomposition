@@ -68,6 +68,7 @@ public class HomePage extends WebPage {
             item.add(new Label("weightDifference", MathUtil.formatPositiveOrNegative(metrics.getWeightDifference())));
             item.add(new Label("bodyFatDifference", MathUtil.formatPositiveOrNegative(metrics.getBodyFatDifference())));
             item.add(new Label("waterPercentageDifference", MathUtil.formatPositiveOrNegative(metrics.getWaterPercentageDifference())));
+            item.add(new Label("normalizedBodyFatDifference", MathUtil.formatPositiveOrNegative(metrics.getNormalizedBodyFatDifference())));
          }
       };
       metricsDisplay.add(metrics);

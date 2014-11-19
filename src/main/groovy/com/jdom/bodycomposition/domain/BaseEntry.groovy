@@ -10,6 +10,8 @@ import javax.persistence.*
 @ToString
 class BaseEntry implements Serializable {
 
+    static final double WATER_PERCENTAGE_BASELINE = 63.6
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     Long id
@@ -25,4 +27,9 @@ class BaseEntry implements Serializable {
 
     @Column(name = 'water_percentage')
     Double waterPercentage
+
+    double getNormalizedBodyFat() {
+        def value = bodyFat + (waterPercentage - WATER_PERCENTAGE_BASELINE)
+        return Math.round(value * 10) / 10
+    }
 }
